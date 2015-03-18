@@ -35,8 +35,8 @@
    #"\bit\b" "'t"
    #"\b(it's|it is|this is)\b" "'tis"
    #"\bnot\b" "nay"
-   #"should\b" ["must" "shalt"]
-   #"shouldn't\b" ["mustn't" "shan't"]
+   #"\b(should|must)\b" "shalt"
+   #"\b(shouldn't|mustn't)\b" "shan't"
    #"\buntil\b" "'til"
    #"\bright\b" "true"
    #"\bbye\b" ["fare thee well" "be blessed"]
