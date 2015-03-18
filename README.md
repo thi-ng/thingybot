@@ -1,6 +1,12 @@
 # thingybot
 
-A little Twitter bot translating messages into pseudo Early Modern English.
+A little Twitter bot, currently purely translating messages into
+pseudo Early Modern English, though easily adaptable for more
+interesting purposes.
+
+- Configurable poll time (not using streaming api (yet))
+- Keeps track of last processed reply (to avoid duplicates)
+- Adds proper source tweet ID for replies
 
 [@thingybot](https://twitter.com/thingybot)
 
@@ -15,7 +21,8 @@ First edit `launch-sample.sh` and add your Twitter API details. Then launch via:
 In the REPL kick off with:
 
 ```clj
-;; start bot w/ 60s poll interval (shorter periods will trigger Twitter's API rate limit)
+;; start bot w/ 60s poll interval
+;; (shorter periods will trigger Twitter's API rate limit)
 (def bot (run state 60000))
 
 ;; `bot` is a control channel, which should be closed to stop the bot
