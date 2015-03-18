@@ -66,9 +66,8 @@
   (str/replace msg (str "@" bot-name) user))
 
 (defn process-tweet
-  [{:keys [text user] :as t}]
-  (println "----")
-  (println t)
+  [{:keys [text user] :as tweet}]
+  (println "----\n" tweet)
   (->> text
        (str/lower-case)
        (replace-user (str "@" (:screen_name user)))
@@ -80,18 +79,18 @@
 (defn process-mentions
   [{:keys [last-tweet replies] :as state}]
   (try
-    (println "reloading..." last-tweet)
+    (println "reloading, since:" last-tweet)
     (let [replies' (->> (statuses-mentions-timeline
                          :oauth-creds creds
                          :params (if (pos? last-tweet) {:since-id (:last-tweet state)}))
                         :body
-                        (filter #(not= bot-name (get-in % [:user :screen_name])))
-                        (reduce
-                         #(assoc % (:id %2) {:src (:text %2) :reply (process-tweet %2)})
-                         {}))
+                        (into
+                         {}
+                         (comp
+                          (filter #(not= bot-name (get-in % [:user :screen_name])))
+                          (map #(vector (:id %) {:src (:text %) :reply (process-tweet %)})))))
           replies  (merge replies replies')]
-      (println (count replies'))
-      (println replies')
+      (println "new replies:" replies')
       (doseq [[id r] replies']
         (send-tweet (:reply r) {:in_reply_to_status_id id}))
       (assoc state
