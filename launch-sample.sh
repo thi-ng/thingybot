@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export TWITTER_APP_CONSUMER_KEY=
+export TWITTER_APP_CONSUMER_SECRET=
+export TWITTER_USER_ACCESS_TOKEN=
+export TWITTER_USER_ACCESS_TOKEN_SECRET=
+export BOT_NAME=thingybot
+
+lein $@
