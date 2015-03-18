@@ -2,6 +2,8 @@
 
 A little Twitter bot translating messages into pseudo Early Modern English.
 
+[@thingybot](https://twitter.com/thingybot)
+
 ## Usage
 
 First edit `launch-sample.sh` and add your Twitter API details. Then launch via:
