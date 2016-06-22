@@ -1,7 +1,8 @@
 (ns thingybot.core
   (:require
    [twitter.oauth :as oauth]
-   [twitter.api.restful :refer :all]
+   [twitter.api.restful :as rest]
+   [twitter.request :as req]
    [environ.core :refer [env]]
    [clojure.data.json :as json]
    [clojure.core.async :as async :refer [go-loop chan <! close! alts! timeout]]
@@ -46,8 +47,8 @@
 (defn send-tweet
   [msg & [opts]]
   (println "tweeting: " msg)
-  (statuses-update :oauth-creds creds
-                   :params (merge {:status msg} opts)))
+  (rest/statuses-update :oauth-creds creds
+                        :params (merge {:status msg} opts)))
 
 (defn apply-past-tense
   [w]
@@ -80,7 +81,7 @@
   [{:keys [last-tweet replies] :as state}]
   (try
     (println "reloading, since:" last-tweet)
-    (let [replies' (->> (statuses-mentions-timeline
+    (let [replies' (->> (rest/statuses-mentions-timeline
                          :oauth-creds creds
                          :params (if (pos? last-tweet) {:since-id (:last-tweet state)}))
                         :body
@@ -139,3 +140,12 @@
     :source "<a href=\"https://about.twitter.com/products/tweetdeck\" rel=\"nofollow\">TweetDeck</a>",
     :id 577991730923966464,
     :in_reply_to_user_id 3093638524}])
+
+(comment
+  (rest/statuses-update-with-media
+   :oauth-creds creds
+   :body        [(req/file-body-part "shakespeare.jpg")
+                 (req/status-body-part "to be or not to be...")]
+   :params      {:in_reply_to_status_id 578049844847087617})
+
+  )
