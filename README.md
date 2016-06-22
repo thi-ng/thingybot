@@ -12,7 +12,7 @@ interesting purposes.
 
 ## Usage
 
-First edit `launch-sample.sh` and add your Twitter API details. Then launch via:
+First edit `launch-sample.sh` and add your Twitter API details (see below). Then launch via:
 
 ```
 ./launch.sh repl
@@ -28,6 +28,13 @@ In the REPL kick off with:
 ;; `bot` is a control channel, which should be closed to stop the bot
 (close! bot)
 ```
+
+## Create Twitter app credentials
+
+1. Go to: https://apps.twitter.com/
+2. Create new app (don't need callback URL)
+3. Copy Consumer key/secret & Access token/secret into `launch-sample.sh`
+4. Change the bot user name
 
 ## License
 
