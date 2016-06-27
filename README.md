@@ -40,14 +40,14 @@ The overall format for the `lsys` command is: `header:rules`, where
 
 A ruleset is a comma separated list of single letter rule IDs an
 their replacements. The ruleset **must** contain a rule named `s` -
-the start rule (axiom).
+the start rule (axiom, also see above example).
 
 E.g. `s=f-f-f-fs` defines a rule named `s` which is iteratively
 expanded into:
 
-1) `f-f-f-fs`
-2) `f-f-f-ff-f-f-fs`
-3) `f-f-f-ff-f-f-ff-f-f-fs` etc.
+1. `f-f-f-fs`
+2. `f-f-f-ff-f-f-fs`
+3. `f-f-f-ff-f-f-ff-f-f-fs` etc.
 
 Other rule symbols are:
 
@@ -57,7 +57,7 @@ Other rule symbols are:
 - `[` - store state (e.g. for branching)
 - `]` - pop state (end branch)
 
-Run-lenght encoding can be used for multiple consecutive symbols (to save
+Run-length encoding can be used for multiple consecutive symbols (to save
 precious char counts), e.g. `5+` expands to `+++++`. This only numbers
 `2` - `9` can be used for this purpose.
 
