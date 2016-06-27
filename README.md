@@ -36,9 +36,18 @@ The overall format for the `lsys` command is: `header:rules`, where
 - Start angle
 - Rotation angle
 
-...and `rules` a comma separated list of single letter rule IDs an
+#### Rule syntax
+
+A ruleset is a comma separated list of single letter rule IDs an
 their replacements. The ruleset **must** contain a rule named `s` -
 the start rule (axiom).
+
+E.g. `s=f-f-f-fs` defines a rule named `s` which is iteratively
+expanded into:
+
+1) `f-f-f-fs`
+2) `f-f-f-ff-f-f-fs`
+3) `f-f-f-ff-f-f-ff-f-f-fs` etc.
 
 Other rule symbols are:
 
@@ -48,16 +57,23 @@ Other rule symbols are:
 - `[` - store state (e.g. for branching)
 - `]` - pop state (end branch)
 
+Run-lenght encoding can be used for multiple consecutive symbols (to save
+precious char counts), e.g. `5+` expands to `+++++`. This only numbers
+`2` - `9` can be used for this purpose.
+
 Furthermore the symbols `a` - `e` can be used as markers or for more
 complex, mutually recursive replacements and each also execute an
 implicit forward motion.
 
-### Error handling
+#### Error handling
 
 For security reasons the bot will refuse to execute systems expanding
 to more than 1 million symbols.
 
-If there're any syntax errors, you'll most likely get a text-only reply telling you so, or if the error is more subtle, receive an image with default values for the ones which contained errors (e.g. header settings).
+If there're any syntax errors, you'll most likely get a text-only
+reply telling you so, or if the error is more subtle, receive an image
+with default values for the ones which contained errors (e.g. header
+settings).
 
 ## Running
 
