@@ -57,13 +57,14 @@ Other rule symbols are:
 - `[` - store state (e.g. for branching)
 - `]` - pop state (end branch)
 
-Run-length encoding can be used for multiple consecutive symbols (to save
-precious char counts), e.g. `5+` expands to `+++++`. This only numbers
-`2` - `9` can be used for this purpose.
+Run-length encoding can be used for multiple consecutive symbols (to
+save precious char counts), e.g. `5+` expands to `+++++`. Only the
+single-digit numbers `2` - `9` can be used for this purpose.
 
-Furthermore the symbols `a` - `e` can be used as markers or for more
+Furthermore, the symbols `a` - `e` can be used as markers or for more
 complex, mutually recursive replacements and each also execute an
-implicit forward motion.
+implicit forward motion. The symbols `x`,`y`,`z` are similar too, but
+do not incl. a forward motion.
 
 #### Error handling
 
@@ -72,8 +73,8 @@ to more than 1 million symbols.
 
 If there're any syntax errors, you'll most likely get a text-only
 reply telling you so, or if the error is more subtle, receive an image
-with default values for the ones which contained errors (e.g. header
-settings).
+based on default values for the ones which were unspecified or
+contained errors (e.g. header settings, missing rules).
 
 ## Running
 
