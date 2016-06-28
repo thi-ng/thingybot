@@ -13,6 +13,9 @@
    :theta  0
    :rot    90})
 
+(def valid-symbols
+  #{:start :fwd :left :right :push :pop :a :b :c :d :e :x :y :z})
+
 (defn replace-symbols
   [src]
   (let [src (replace
@@ -20,7 +23,8 @@
               \f :fwd
               \+ :right \- :left
               \[ :push \] :pop
-              \a :a \b :b \c :c \d :d \e :e}
+              \a :a \b :b \c :c \d :d \e :e
+              \x :x \y :y \z :z}
              src)
         num (count src)]
     (loop [acc [] i 0]
@@ -40,11 +44,11 @@
 (defn parse-system-spec
   [src]
   (let [src                 (str/lower-case src)
-        [hd rules]          (str/split src #":")
-        [bg iter theta rot] (str/split hd #",")
+        [hd rules]          (str/split src #"\s*:\s*")
+        [bg iter theta rot] (str/split hd #"\s*,\s*")
         rules               (if rules
                               (->> rules
-                                   (re-seq #"(([a-z])=([a-z2-9\-\+\[\]]+))")
+                                   (re-seq #"(([a-z])\s*=\s*([a-z2-9\-\+\[\]]+))")
                                    (map translate-rule)
                                    (into {})))]
     {:bg    (try (col/as-int24 (col/css bg)) (catch Exception e))
@@ -58,7 +62,7 @@
   (and (:start rules)
        (->> rules
             (mapcat val)
-            (every? #{:start :fwd :left :right :push :pop :a :b :c :d :e}))))
+            (every? valid-symbols))))
 
 (defn process-tweet
   [{:keys [id src params user-id]}]
