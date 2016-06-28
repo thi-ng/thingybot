@@ -99,11 +99,12 @@
                     (last))]
     (println "stream length:" (count stream))
     (if (< (count stream) 1e6)
-      (->> stream
-           (interpret-symbols
-            (make-agent (v/vec2) (m/radians theta) length (m/radians rot)))
-           (:path)
-           (gu/fit-all-into-bounds (r/rect margin margin w' w'))))))
+      (let [path (->> stream
+                      (interpret-symbols
+                       (make-agent (v/vec2) (m/radians theta) length (m/radians rot)))
+                      (:path))]
+        (if (seq path)
+          (gu/fit-all-into-bounds (r/rect margin margin w' w') path))))))
 
 (defn visualize-system
   [{:keys [file width bg]} path]
@@ -128,34 +129,3 @@
   (if-let [path (eval-system config)]
     {:result (visualize-system config path)}
     {:error :too-large}))
-
-(comment
-  (visualize-system
-   {:file   "lsys-gasket.png"
-    :width  600
-    :margin 10
-    :rules  {:start [:fwd :left
-                     :fwd :left
-                     :fwd :left
-                     :fwd :left
-                     :fwd]
-             :fwd   [:fwd :left
-                     :fwd :right :right :fwd :right
-                     :fwd :left :fwd :left :fwd]}
-    :iter   6
-    :theta  0
-    :rot    72
-    :length 10})
-
-  (visualize-system
-   (merge
-    config/default-config
-    (config/parse-config "#200,6,0,72:s=f-f-f-f-f,f=f-f++f+f-f-f")
-    {:file "lsys-gasket.png"}))
-
-  (lsys/visualize-system
-   (merge
-    config/default-config
-    (config/parse-config "#002,9,0,36:s=[b]--[b]--[b]--[b]--[b],a=c--d++++b[+c++++a]--,b=-c++d[+++a++b]-,c=+a--b[---c--d]+,d=++c----a[-d----b]++b")
-    {:file "lsys-penrose.png"}))
-  )
