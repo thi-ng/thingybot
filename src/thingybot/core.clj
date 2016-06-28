@@ -18,21 +18,18 @@
 (defn make-job-spec
   [{:keys [id text user] :as tweet}]
   (let [src       (str/trim (str/replace text (str "@" config/bot-name) ""))
-        idx       (.indexOf ^String src ",")
-        [cmd src] (if (pos? idx)
-                    [(subs src 0 idx) (subs src (inc idx))]
-                    [src src])]
+        [cmd src] (str/split src #",\s*" 2)]
     {:raw     tweet
      :id      id
      :src     src
      :cmd     cmd
-     :params  (select-keys tweet [:in_reply_to_status_id])
+     :params  {:in_reply_to_status_id id}
      :user-id (str "@" (:screen_name user))}))
 
 (defn process-tweet
   [tweet]
-  (println "---- processing tweet:" tweet)
   (let [job (make-job-spec tweet)]
+    (println "----\nprocessing job:" (:id job) (:user-id job) (:text tweet))
     (some
      (fn [[cmd handler]]
        (when (= cmd (:cmd job))
